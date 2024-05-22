@@ -1,6 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@font-face {
+  font-family: 'Omori';
+  src: url('../public/font/OMORI_GAME2.ttf') format('truetype');
+}
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -30,4 +34,9 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+main {
+  font-family: 'Omori', sans-serif;
+  font-size: xxx-large;
 }
