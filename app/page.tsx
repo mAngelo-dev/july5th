@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
+import Link from "next/link";
 
 export default function Home() {
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -37,7 +38,7 @@ export default function Home() {
     return (
         <main className='flex justify-center items-center min-h-screen'>
             <div className='text-center'>
-                <h1 className='text-3xl mb-4'>Hi, Julie! 💕</h1>
+                <h1 className='text-3xl mb-4'>Hi, Julie! <Link href={'/secret'}>💕</Link></h1>
                 <div id="countdown" className='text-xl'>
                     {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
                 </div>
