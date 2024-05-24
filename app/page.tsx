@@ -33,7 +33,7 @@ export default function Home() {
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [timeLeft]);
+    }, []);
 
     return (
         <main className='flex justify-center items-center min-h-screen'>
