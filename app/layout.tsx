@@ -6,20 +6,25 @@ import React from "react";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "🌙 & ☀️",
-  description: "Contagem regressiva para o inicio do nosso relacionamento",
+    title: "🌙 & ☀️" as string,
+    description: "Contagem regressiva para o início do nosso relacionamento",
 };
 
-export default function RootLayout({children}: {
-  children: React.ReactNode;
-}) {
-  return (
-      <html lang="en">
-      <head>
-        <title>{`${metadata.title}`}</title>
-        <meta name="description" content={`${metadata.description}`} />
-      </head>
-      <body className={inter.className}>{children}</body>
-      </html>
-  );
+interface RootLayoutProps {
+    children: React.ReactNode;
 }
+
+const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
+    return (
+        <html lang="en">
+        <head>
+            <title>{metadata.title as string}</title>
+            <meta name="description" content={metadata.description as string}/>
+            <link rel="icon" href="./favicon.ico" sizes="any"/>
+        </head>
+        <body className={inter.className}>{children}</body>
+        </html>
+    );
+};
+
+export default RootLayout;
