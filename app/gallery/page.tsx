@@ -6,7 +6,8 @@ import {Key, useState} from "react";
 export default function Gallery() {
     const [activeIndex, setActiveIndex] = useState(0);
 
-    function importAll(r) {
+    function importAll(r: [any]) {
+        // @ts-ignore
         return r.keys().map(r);
     }
 
@@ -25,10 +26,12 @@ export default function Gallery() {
         setActiveIndex(index);
     };
 
+    // @ts-ignore
     return (
         <main className="flex justify-center items-center min-h-screen">
             <div id="default-carousel" className="relative w-full" data-carousel="slide">
                 <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
+                    {/* @ts-ignore */}
                     {images.map((src: string | StaticImport, index: Key | null | undefined) => (
                         <div
                             key={index}
@@ -37,7 +40,7 @@ export default function Gallery() {
                         >
                             <Image
                                 src={src}
-                                alt={`Carousel image ${index + 1}`}
+                                alt={`Carousel image ${index}`}
                                 layout="fill"
                                 objectFit="contain"
                             />
@@ -46,7 +49,7 @@ export default function Gallery() {
                 </div>
 
                 <div className="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
-                    {images.map((_, index) => (
+                    {images.map((_:any, index: number) => (
                         <button
                             key={index}
                             type="button"
