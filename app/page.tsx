@@ -68,6 +68,7 @@ export default function App() {
     return (
         <>
             <main className='flex justify-center items-center min-h-screen flex-col'>
+                <h1 id="sunbringer"><Link href={'/gallery'}> 🌙 & ☀️</Link></h1>
                 <Image src='/bulb.gif' alt='Loading GIF' width={64} height={64} priority={true}/>
                 <audio id='audio' src='/music/Bromeliad.mp3' className='hidden' autoPlay={true} loop/>
                 <h1 className='text-3xl mb-4'>Hi, Julie!

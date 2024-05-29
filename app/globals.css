@@ -40,3 +40,15 @@ main {
   font-family: 'Omori', sans-serif;
   font-size: xxx-large;
 }
+
+#sunbringer {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  position: fixed ;
+  bottom: 2em;
+  right: 2em;
+}
+
+#sunbringer:hover {
+  opacity: 1;
+}
