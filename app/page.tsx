@@ -5,8 +5,9 @@ import Image from "next/image";
 import { differenceInDays, differenceInHours, differenceInMinutes, differenceInMonths, differenceInSeconds } from "date-fns";
 
 export default function App() {
-    const [timeLeft, setTimeLeft] = useState({ months: 0, days: 0, hours: 0, minutes: 0, seconds: 0,});
+    const [timeLeft, setTimeLeft] = useState({ months: 0, days: 0, hours: 0, minutes: 0, seconds: 0, });
     const [isLoaded, setIsLoaded] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false);
 
     useEffect(() => {
         function calculateTimeLeft() {
@@ -40,20 +41,17 @@ export default function App() {
         return () => clearInterval(interval);
     }, []);
 
-    useEffect(() => {
-        const handleClick = async () => {
-            const audio = document.getElementById('audio') as HTMLAudioElement;
-            if (audio && audio.paused) {
-               await audio.play();
+    const toggleAudio = async () => {
+        const audio = document.getElementById('audio') as HTMLAudioElement;
+        if (audio) {
+            if (isPlaying) {
+                audio.pause();
+            } else {
+                await audio.play();
             }
-        };
-
-        document.addEventListener('click', handleClick);
-
-        return () => {
-            document.removeEventListener('click', handleClick);
-        };
-    }, []);
+            setIsPlaying(!isPlaying);
+        }
+    };
 
     if (!isLoaded) {
         return (
@@ -67,10 +65,16 @@ export default function App() {
 
     return (
         <>
-            <main className='flex justify-center items-center min-h-screen flex-col'>
+            <main className='flex justify-center items-center min-h-screen flex-col relative'>
+                <button
+                    onClick={toggleAudio}
+                    className='absolute top-2 right-2 p-2 text-black rounded-full'
+                >
+                    {isPlaying ? '⏸️' : '▶️'}
+                </button>
                 <h1 id="sunbringer"><Link href={'/gallery'}> 🌙 & ☀️</Link></h1>
-                <Image src='/bulb.gif' alt='Loading GIF' width={64} height={64} priority={true}/>
-                <audio id='audio' src='/music/Bromeliad.mp3' className='hidden' autoPlay={true} loop/>
+                <Image src='/bulb.gif' alt='Loading GIF' width={64} height={64} priority={true} />
+                <audio id='audio' src='/music/Bromeliad.mp3' className='hidden' autoPlay={true} loop />
                 <h1 className='text-3xl mb-4'>Hi, Julie!
                     <Link href={'/secret'}>💕</Link>
                 </h1>
