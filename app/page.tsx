@@ -68,7 +68,7 @@ export default function App() {
             <main className='flex justify-center items-center min-h-screen flex-col relative'>
                 <button
                     onClick={toggleAudio}
-                    className='absolute top-2 right-2 p-2 text-black rounded-full text-center flex'
+                    className='absolute top-2 right-2 p-2 text-black rounded-full'
                 >
                     {isPlaying ? '⏸️' : '▶️'}
                 </button>
