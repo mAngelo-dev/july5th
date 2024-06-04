@@ -1,15 +1,16 @@
 'use client'
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
+import Link from "next/link";
 import {Key, useState} from "react";
 
 export default function Gallery() {
     const [activeIndex, setActiveIndex] = useState(0);
 
-    function importAll(r: [any]) {
-        // @ts-ignore
-        return r.keys().map(r);
+    function importAll(r: any) {
+        return r.keys().map((key: any) => r(key));
     }
+
 
     // @ts-ignore
     const images = importAll(require.context('/public/pictures', false, /\.(png|jpe?g|svg)$/));
@@ -26,9 +27,8 @@ export default function Gallery() {
         setActiveIndex(index);
     };
 
-    // @ts-ignore
     return (
-        <main className="flex justify-center items-center min-h-screen">
+        <main className="flex flex-col justify-center items-center min-h-screen">
             <div id="default-carousel" className="relative w-full" data-carousel="slide">
                 <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
                     {/* @ts-ignore */}
@@ -36,7 +36,7 @@ export default function Gallery() {
                         <div
                             key={index}
                             className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${index === activeIndex ? 'opacity-100' : 'opacity-0'}`}
-                            data-carousel-item
+                            data-carousel-item=""
                         >
                             <Image
                                 src={src}
@@ -65,7 +65,7 @@ export default function Gallery() {
                     type="button"
                     className="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
                     onClick={handlePrev}
-                    data-carousel-prev
+                    data-carousel-prev=""
                 >
                     <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
                         <svg className="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
@@ -79,7 +79,7 @@ export default function Gallery() {
                     type="button"
                     className="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
                     onClick={handleNext}
-                    data-carousel-next
+                    data-carousel-next=""
                 >
                     <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
                         <svg className="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
@@ -89,6 +89,7 @@ export default function Gallery() {
                     </span>
                 </button>
             </div>
+            <Link href={'/'} className="mt-10">Voltar</Link>
         </main>
     );
 }
