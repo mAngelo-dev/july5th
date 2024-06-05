@@ -52,3 +52,9 @@ main {
 #sunbringer:hover {
   opacity: 1;
 }
+
+#proposal {
+  position: fixed ;
+  bottom: 2em;
+  left: 2em;
+}
