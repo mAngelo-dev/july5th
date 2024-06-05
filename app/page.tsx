@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Link from "next/link";
 import Image from "next/image";
 import { differenceInDays, differenceInHours, differenceInMinutes, differenceInMonths, differenceInSeconds } from "date-fns";
+import { Analytics } from "@vercel/analytics/react"
 
 export default function App() {
     const [timeLeft, setTimeLeft] = useState({ months: 0, days: 0, hours: 0, minutes: 0, seconds: 0, });
@@ -65,6 +66,7 @@ export default function App() {
 
     return (
         <>
+            <Analytics/>
             <main className='flex justify-center items-center min-h-screen flex-col relative'>
                 <button
                     onClick={toggleAudio}
