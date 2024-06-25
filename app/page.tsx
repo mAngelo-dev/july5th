@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Link from "next/link";
 import Image from "next/image";
 import { differenceInDays, differenceInHours, differenceInMinutes, differenceInMonths, differenceInSeconds } from "date-fns";
+import { Analytics } from "@vercel/analytics/react"
 
 export default function App() {
     const [timeLeft, setTimeLeft] = useState({ months: 0, days: 0, hours: 0, minutes: 0, seconds: 0, });
@@ -15,7 +16,7 @@ export default function App() {
             const now = new Date();
 
             if (targetDate <= now) {
-                return null;
+                return { months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 };
             }
 
             // Calculate differences
@@ -35,6 +36,7 @@ export default function App() {
                 setIsLoaded(true);
             } else {
                 clearInterval(interval);
+                setIsLoaded(true);
             }
         }, 1000);
 
@@ -57,7 +59,7 @@ export default function App() {
         return (
             <main className='flex justify-center items-center min-h-screen'>
                 <div className='text-center'>
-                    <h1 className='text-3xl mb-4 animate-bounce'>Loading...</h1>
+                    <h1 className='text-7xl mb-4 animate-bounce'>Loading...</h1>
                 </div>
             </main>
         );
@@ -65,6 +67,7 @@ export default function App() {
 
     return (
         <>
+            <Analytics/>
             <main className='flex justify-center items-center min-h-screen flex-col relative'>
                 <button
                     onClick={toggleAudio}
@@ -72,15 +75,21 @@ export default function App() {
                 >
                     {isPlaying ? '⏸️' : '▶️'}
                 </button>
-                <h1 id="sunbringer"><Link href={'/gallery'}> 🌙 & ☀️</Link></h1>
-                <Image src='/bulb.gif' alt='Loading GIF' width={64} height={64} priority={true} />
-                <audio id='audio' src='/music/Bromeliad.mp3' className='hidden' autoPlay={true} loop />
-                <h1 className='text-3xl mb-4'>Hi, Julie!
+                <p id="sunbringer"><Link href={'/gallery'}> 🌙 & ☀️</Link></p>
+                <Image src='/bulb.gif' alt='Loading GIF' width={256} height={256} priority={true} />
+                <audio id='audio' src='/music/Bromeliad.mp3' className='hidden' loop />
+                <h1 className='mb-4 text-7xl'>Hi, Julie!
                     <Link href={'/secret'}>💕</Link>
                 </h1>
-                <div id="countdown" className='text-xl'>
-                    {timeLeft.months}m {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
+                <div id="countdown" className='text-4xl'>
+                    {timeLeft.months > 0 && `${timeLeft.months}m `}
+                    {timeLeft.days > 0 && `${timeLeft.days}d `}
+                    {timeLeft.hours > 0 && `${timeLeft.hours}h `}
+                    {timeLeft.minutes > 0 && `${timeLeft.minutes}m `}
+                    {timeLeft.seconds > 0 && `${timeLeft.seconds}s`}
+                    {timeLeft.months === 0 && timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0 && <p>Estou chegando...</p>}
                 </div>
+                {timeLeft.months === 0 && timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0 && <Link id='proposal' href={'/proposal'}>💍</Link>}
             </main>
         </>
     );
