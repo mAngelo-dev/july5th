@@ -12,7 +12,7 @@ export default function App() {
 
     useEffect(() => {
         function calculateTimeLeft() {
-            const targetDate = new Date('June 5, 2024 14:05:00');
+            const targetDate = new Date('July 5, 2024 14:05:00');
             const now = new Date();
 
             if (targetDate <= now) {
