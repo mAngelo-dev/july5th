@@ -1,50 +1,38 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Link from "next/link";
 import Image from "next/image";
-import { differenceInDays, differenceInHours, differenceInMinutes, differenceInMonths, differenceInSeconds } from "date-fns";
-import { Analytics } from "@vercel/analytics/react"
+import { differenceInMilliseconds, intervalToDuration } from "date-fns";
+import { Analytics } from "@vercel/analytics/react";
 
 export default function App() {
-    const [timeLeft, setTimeLeft] = useState({ months: 0, days: 0, hours: 0, minutes: 0, seconds: 0, });
+    const [timeLeft, setTimeLeft] = useState({});
     const [isLoaded, setIsLoaded] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
 
     useEffect(() => {
-        function calculateTimeLeft() {
-            const targetDate = new Date('July 5, 2024 14:05:00');
-            const now = new Date();
+        const targetDate = new Date('July 5, 2024 14:05:00');
 
-            if (targetDate <= now) {
+        function calculateTimeLeft() {
+            const now = new Date();
+            const diff = differenceInMilliseconds(targetDate, now);
+            if (diff <= 0) {
                 return { months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 };
             }
-
-            // Calculate differences
-            const months = differenceInMonths(targetDate, now);
-            const days = differenceInDays(targetDate, now) % 30;
-            const hours = differenceInHours(targetDate, now) % 24;
-            const minutes = differenceInMinutes(targetDate, now) % 60;
-            const seconds = differenceInSeconds(targetDate, now) % 60;
-
-            return { months, days, hours, minutes, seconds };
+            return intervalToDuration({ start: now, end: targetDate });
         }
 
         const interval = setInterval(() => {
             const calculatedTimeLeft = calculateTimeLeft();
-            if (calculatedTimeLeft) {
-                setTimeLeft(calculatedTimeLeft);
-                setIsLoaded(true);
-            } else {
-                clearInterval(interval);
-                setIsLoaded(true);
-            }
+            setTimeLeft(calculatedTimeLeft);
+            setIsLoaded(true);
         }, 1000);
 
         return () => clearInterval(interval);
     }, []);
 
-    const toggleAudio = async () => {
-        const audio = document.getElementById('audio') as HTMLAudioElement;
+    const toggleAudio = useCallback(async () => {
+        const audio = document.getElementById('audio');
         if (audio) {
             if (isPlaying) {
                 audio.pause();
@@ -53,7 +41,7 @@ export default function App() {
             }
             setIsPlaying(!isPlaying);
         }
-    };
+    }, [isPlaying]);
 
     if (!isLoaded) {
         return (
@@ -65,9 +53,11 @@ export default function App() {
         );
     }
 
+    const { months = 0, days = 0, hours = 0, minutes = 0, seconds = 0 } = timeLeft;
+
     return (
         <>
-            <Analytics/>
+            <Analytics />
             <main className='flex justify-center items-center min-h-screen flex-col relative'>
                 <button
                     onClick={toggleAudio}
@@ -75,21 +65,21 @@ export default function App() {
                 >
                     {isPlaying ? '⏸️' : '▶️'}
                 </button>
-                {timeLeft.months !== 0 && timeLeft.days !== 0 && timeLeft.hours !== 0 && timeLeft.minutes !== 0 && timeLeft.seconds !== 0 && <p id="sunbringer"><Link href={'/gallery'}> 🌙 & ☀️</Link></p>}
-                <Image src='/bulb.gif' alt='Loading GIF' width={256} height={256} priority={true} />
+                <p id="sunbringer"><Link href={'/gallery'}> 🌙 & ☀️</Link></p>
+                <Image src='/bulb.gif' alt='Loading GIF' width={256} height={256} priority />
                 <audio id='audio' src='/music/Bromeliad.mp3' className='hidden' loop />
-                <h1 className='mb-4 text-7xl'>Hi, Julie!
-                    <Link href={'/secret'}>💕</Link>
-                </h1>
+                <h1 className='mb-4 text-7xl'>Hi, Julie! <Link href={'/secret'}>💕</Link></h1>
                 <div id="countdown" className='text-4xl'>
-                    {timeLeft.months > 0 && `${timeLeft.months}m `}
-                    {timeLeft.days > 0 && `${timeLeft.days}d `}
-                    {timeLeft.hours > 0 && `${timeLeft.hours}h `}
-                    {timeLeft.minutes > 0 && `${timeLeft.minutes}m `}
-                    {timeLeft.seconds > 0 && `${timeLeft.seconds}s`}
-                    {timeLeft.months === 0 && timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0 && <p>Estou chegando...</p>}
+                    {months > 0 && `${months}m `}
+                    {days > 0 && `${days}d `}
+                    {hours > 0 && `${hours}h `}
+                    {minutes > 0 && `${minutes}m `}
+                    {seconds > 0 && `${seconds}s`}
+                    {months === 0 && days === 0 && hours === 0 && minutes === 0 && seconds === 0 && <p>Estou chegando...</p>}
                 </div>
-                {timeLeft.months === 0 && timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0 && <Link id='proposal' href={'/proposal'}>💍</Link>}
+                {months === 0 && days === 0 && hours === 0 && minutes === 0 && seconds === 0 && (
+                    <Link id='proposal' href={'/proposal'}>💍</Link>
+                )}
             </main>
         </>
     );
