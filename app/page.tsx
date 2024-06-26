@@ -8,7 +8,7 @@ import { Analytics } from "@vercel/analytics/react"
 export default function App() {
     const [timeLeft, setTimeLeft] = useState({ months: 0, days: 0, hours: 0, minutes: 0, seconds: 0, });
     const [isLoaded, setIsLoaded] = useState(false);
-    const [isPlaying, setIsPlaying] = useState(true);
+    const [isPlaying, setIsPlaying] = useState(false);
 
     useEffect(() => {
         function calculateTimeLeft() {
