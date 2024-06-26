@@ -12,7 +12,7 @@ export default function App() {
 
     useEffect(() => {
         function calculateTimeLeft() {
-            const targetDate = new Date('July 5, 2024 14:05:00');
+            const targetDate = new Date('June 5, 2024 14:05:00');
             const now = new Date();
 
             if (targetDate <= now) {
@@ -75,7 +75,7 @@ export default function App() {
                 >
                     {isPlaying ? '⏸️' : '▶️'}
                 </button>
-                <p id="sunbringer"><Link href={'/gallery'}> 🌙 & ☀️</Link></p>
+                {timeLeft.months !== 0 && timeLeft.days !== 0 && timeLeft.hours !== 0 && timeLeft.minutes !== 0 && timeLeft.seconds !== 0 && <p id="sunbringer"><Link href={'/gallery'}> 🌙 & ☀️</Link></p>}
                 <Image src='/bulb.gif' alt='Loading GIF' width={256} height={256} priority={true} />
                 <audio id='audio' src='/music/Bromeliad.mp3' className='hidden' loop />
                 <h1 className='mb-4 text-7xl'>Hi, Julie!
